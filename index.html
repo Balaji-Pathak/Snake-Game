@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Snake Game</title>
     <style>
         body {
@@ -91,6 +92,45 @@
             background-color: #4CAF50;
             transition: width 0.1s linear;
         }
+        
+        /* Add these new styles */
+        .mobile-controls {
+            display: none;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #333;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .control-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 800px) {
+            canvas {
+                width: 100%;
+                max-width: 500px;
+                height: auto;
+            }
+            .mobile-controls {
+                display: flex;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -111,5 +151,19 @@
     </div>
 
     <script src="game.js"></script>
+    
+    <!-- Add mobile controls -->
+    <div class="mobile-controls">
+        <div class="control-row">
+            <div class="control-btn" id="upBtn">↑</div>
+        </div>
+        <div class="control-row">
+            <div class="control-btn" id="leftBtn">←</div>
+            <div class="control-btn" id="rightBtn">→</div>
+        </div>
+        <div class="control-row">
+            <div class="control-btn" id="downBtn">↓</div>
+        </div>
+    </div>
 </body>
 </html>

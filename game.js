@@ -198,3 +198,67 @@ document.addEventListener('keydown', (e) => {
 
 // Start the game initially
 resetGame();
+
+// Add after other constants
+const upBtn = document.getElementById('upBtn');
+const downBtn = document.getElementById('downBtn');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+
+// Add after keyboard event listener
+// Mobile touch controls
+function addTouchControl(btn, dx, dy) {
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if ((dx !== 0 && snake.dx === 0) || (dy !== 0 && snake.dy === 0)) {
+            snake.dx = dx;
+            snake.dy = dy;
+        }
+    });
+}
+
+addTouchControl(upBtn, 0, -1);
+addTouchControl(downBtn, 0, 1);
+addTouchControl(leftBtn, -1, 0);
+addTouchControl(rightBtn, 1, 0);
+
+// Add swipe controls
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+    
+    if (Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal swipe
+        if (dx > 0 && snake.dx === 0) {
+            snake.dx = 1;
+            snake.dy = 0;
+        } else if (dx < 0 && snake.dx === 0) {
+            snake.dx = -1;
+            snake.dy = 0;
+        }
+    } else {
+        // Vertical swipe
+        if (dy > 0 && snake.dy === 0) {
+            snake.dx = 0;
+            snake.dy = 1;
+        } else if (dy < 0 && snake.dy === 0) {
+            snake.dx = 0;
+            snake.dy = -1;
+        }
+    }
+});
