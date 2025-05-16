@@ -3,9 +3,53 @@ const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 const gameOverScreen = document.getElementById('gameOver');
 const finalScoreElement = document.getElementById('finalScore');
+const timeBarContainer = document.getElementById('timeBar');
+const timeBarFill = document.getElementById('timeBarFill');
+const upBtn = document.getElementById('upBtn');
+const downBtn = document.getElementById('downBtn');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
 
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
+const BIG_FOOD_SCORE = 5;
+const BIG_FOOD_TIME = 10000;
+const FOODS_FOR_BIG_FOOD = 5;
+
+// Move initialization into DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize mobile controls
+    function initializeMobileControls() {
+        const upBtn = document.getElementById('upBtn');
+        const downBtn = document.getElementById('downBtn');
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+
+        function handleControl(dx, dy, e) {
+            e.preventDefault();
+            if ((dx !== 0 && snake.dx === 0) || (dy !== 0 && snake.dy === 0)) {
+                snake.dx = dx;
+                snake.dy = dy;
+            }
+        }
+
+        // Button controls
+        upBtn.addEventListener('touchstart', (e) => handleControl(0, -1, e), { passive: false });
+        downBtn.addEventListener('touchstart', (e) => handleControl(0, 1, e), { passive: false });
+        leftBtn.addEventListener('touchstart', (e) => handleControl(-1, 0, e), { passive: false });
+        rightBtn.addEventListener('touchstart', (e) => handleControl(1, 0, e), { passive: false });
+
+        // Also add mouse click support for hybrid devices
+        upBtn.addEventListener('mousedown', (e) => handleControl(0, -1, e));
+        downBtn.addEventListener('mousedown', (e) => handleControl(0, 1, e));
+        leftBtn.addEventListener('mousedown', (e) => handleControl(-1, 0, e));
+        rightBtn.addEventListener('mousedown', (e) => handleControl(1, 0, e));
+    }
+
+    // Start the game and initialize controls
+    resetGame();
+    initializeMobileControls();
+});
 
 let snake = {
     x: 10,
@@ -24,12 +68,7 @@ let food = {
 let score = 0;
 let gameLoop;
 
-// Add these constants at the top with other constants
-const timeBarContainer = document.getElementById('timeBar');
-const timeBarFill = document.getElementById('timeBarFill');
-const BIG_FOOD_SCORE = 5;
-const BIG_FOOD_TIME = 10000; // 10 seconds in milliseconds
-const FOODS_FOR_BIG_FOOD = 5;
+// Add these constants at the
 
 // Add these variables with other let declarations
 let bigFood = null;
@@ -193,72 +232,5 @@ document.addEventListener('keydown', (e) => {
     else if (e.key === 'ArrowDown' && snake.dy === 0) {
         snake.dx = 0;
         snake.dy = 1;
-    }
-});
-
-// Start the game initially
-resetGame();
-
-// Add after other constants
-const upBtn = document.getElementById('upBtn');
-const downBtn = document.getElementById('downBtn');
-const leftBtn = document.getElementById('leftBtn');
-const rightBtn = document.getElementById('rightBtn');
-
-// Add after keyboard event listener
-// Mobile touch controls
-function addTouchControl(btn, dx, dy) {
-    btn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if ((dx !== 0 && snake.dx === 0) || (dy !== 0 && snake.dy === 0)) {
-            snake.dx = dx;
-            snake.dy = dy;
-        }
-    });
-}
-
-addTouchControl(upBtn, 0, -1);
-addTouchControl(downBtn, 0, 1);
-addTouchControl(leftBtn, -1, 0);
-addTouchControl(rightBtn, 1, 0);
-
-// Add swipe controls
-let touchStartX = 0;
-let touchStartY = 0;
-
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-});
-
-document.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-}, { passive: false });
-
-document.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    
-    const dx = touchEndX - touchStartX;
-    const dy = touchEndY - touchStartY;
-    
-    if (Math.abs(dx) > Math.abs(dy)) {
-        // Horizontal swipe
-        if (dx > 0 && snake.dx === 0) {
-            snake.dx = 1;
-            snake.dy = 0;
-        } else if (dx < 0 && snake.dx === 0) {
-            snake.dx = -1;
-            snake.dy = 0;
-        }
-    } else {
-        // Vertical swipe
-        if (dy > 0 && snake.dy === 0) {
-            snake.dx = 0;
-            snake.dy = 1;
-        } else if (dy < 0 && snake.dy === 0) {
-            snake.dx = 0;
-            snake.dy = -1;
-        }
     }
 });

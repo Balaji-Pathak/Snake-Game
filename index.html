@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Snake Game</title>
+    <!-- Update the mobile controls styles in the <style> section -->
     <style>
         body {
             background-color: #f0f0f0;
@@ -101,23 +102,64 @@
         }
         
         .control-btn {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 2px solid #333;
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 3px solid #333;
             border-radius: 50%;
-            font-size: 24px;
+            font-size: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
             touch-action: manipulation;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            margin: 5px;
+            transition: all 0.1s ease;
+        }
+        
+        .control-btn:active {
+            background-color: #ddd;
+            transform: scale(0.95);
+        }
+        
+        .mobile-controls {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            touch-action: none;
         }
         
         .control-row {
             display: flex;
+            gap: 15px;
             justify-content: center;
-            gap: 10px;
+        }
+        
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 3px solid #333;
+            border-radius: 50%;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            touch-action: none;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: all 0.1s ease;
+        }
+        
+        .control-btn:active {
+            background-color: #ddd;
+            transform: scale(0.95);
         }
         
         @media (max-width: 800px) {
@@ -126,9 +168,15 @@
                 max-width: 500px;
                 height: auto;
             }
+            
             .mobile-controls {
                 display: flex;
-                flex-direction: column;
+            }
+            
+            .control-btn {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
             }
         }
     </style>
@@ -150,8 +198,6 @@
         </div>
     </div>
 
-    <script src="game.js"></script>
-    
     <!-- Add mobile controls -->
     <div class="mobile-controls">
         <div class="control-row">
@@ -165,5 +211,8 @@
             <div class="control-btn" id="downBtn">↓</div>
         </div>
     </div>
+
+    <!-- Move script tag to the end of body -->
+    <script src="game.js"></script>
 </body>
 </html>
